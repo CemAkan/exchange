@@ -26,8 +26,13 @@ calculate.addEventListener("click", function(){
     const currency1 = currency_one.value;
     const currency2 = currency_two.value;
     const amountofcurrency = amount.value;
-    
-    fetch (url+"/latest/"+currency1)
+
+    if(amountofcurrency<0){
+        renderError("Please don't use negative number.");
+        document.querySelector("#result").innerHTML = " ";
+    }
+    else{
+        fetch (url+"/latest/"+currency1)
         .then(res => res.json())
         .then(data => {
            const html=
@@ -38,5 +43,18 @@ calculate.addEventListener("click", function(){
             </div>`;
             document.querySelector("#result").innerHTML = html;       
         })
+    };
+    
+    
 });
  
+function renderError(err){
+       const html =`
+       <div class="alert alert-danger">
+       ${err}
+       </div>`;
+       document.querySelector("#errors").innerHTML=html;
+       setTimeout(function() {
+   document.querySelector("#errors").innerHTML = "";
+}, 5000);
+}
